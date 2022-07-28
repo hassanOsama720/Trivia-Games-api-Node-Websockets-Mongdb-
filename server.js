@@ -68,7 +68,7 @@ mongoose
   });
 
 // To port
-server.listen(process.env.PORT_NUMBER || 8080);
+server.listen(process.env.PORT || 8080);
 
 //Import Routes
 const userRouter = require("./routes/userRouter");
