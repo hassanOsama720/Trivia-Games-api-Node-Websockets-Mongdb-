@@ -19,7 +19,7 @@ const io = new Server(server,{
 app.use(cors());
 
 io.on('connection', (socket) => {
-  let tiktokUsername = "nazdej";
+  let tiktokUsername = process.env.USER_NAME;
   
   // Create a new wrapper object and pass the username
   let tiktokChatConnection = new WebcastPushConnection(tiktokUsername);
