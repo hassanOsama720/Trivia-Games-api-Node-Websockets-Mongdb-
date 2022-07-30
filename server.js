@@ -19,24 +19,27 @@ const io = new Server(server,{
 app.use(cors());
 
 io.on('connection', (socket) => {
-  let tiktokUsername = process.env.USER_NAME;
-  
-  // Create a new wrapper object and pass the username
-  let tiktokChatConnection = new WebcastPushConnection(tiktokUsername);
-  
-  // Connect to the chat (await can be used as well)
-  tiktokChatConnection.connect().then(state => {
-    console.info(`Connected to roomId ${state.roomId}`);
-  }).catch(err => {
-    console.log('Failed to connect', err);
-    socket.emit("chat",err);
-  })
-  
-  // Define the events that you want to handle
-  // In this case we listen to chat messages (comments)
-  tiktokChatConnection.on('chat', data => {
-    // console.log(data)
-    socket.emit("chat",data);
+  socket.on("message",(data)=>{
+    console.log(data);
+    let tiktokUsername = data;
+    
+    // Create a new wrapper object and pass the username
+    let tiktokChatConnection = new WebcastPushConnection(tiktokUsername);
+    
+    // Connect to the chat (await can be used as well)
+    tiktokChatConnection.connect().then(state => {
+      console.info(`Connected to roomId ${state.roomId}`);
+    }).catch(err => {
+      console.log('Failed to connect', err);
+      socket.emit("chat",err);
+    })
+    
+    // Define the events that you want to handle
+    // In this case we listen to chat messages (comments)
+    tiktokChatConnection.on('chat', data => {
+      // console.log(data)
+      socket.emit("chat",data);
+    })
   })
 });
 
